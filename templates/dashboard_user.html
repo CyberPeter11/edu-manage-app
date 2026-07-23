@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}{{ role }} Dashboard{% endblock %}
+{% block page_title %}Welcome, {{ current_user.name }}{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+    <div class="stat-card glass-panel fade-in">
+        <div class="stat-icon bg-gradient-primary">
+            <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
+        <div class="stat-details">
+            <h3>My Classes</h3>
+            <p class="stat-value">Active</p>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-sections" style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+    <!-- Notice Board Form -->
+    <div class="section-card glass-panel fade-in">
+        <div class="section-header">
+            <h2>Post Notice</h2>
+        </div>
+        <br>
+        <form action="{{ url_for('post_notice') }}" method="POST" class="form-grid">
+            <div class="input-group full-width">
+                <textarea name="message" rows="4" class="glass-input" required placeholder="Type a message to parents and students..."></textarea>
+            </div>
+            <div class="input-group full-width" style="text-align: right;">
+                <button type="submit" class="btn btn-primary">Post Notice</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Notice Board Display -->
+    <div class="section-card glass-panel fade-in">
+        <div class="section-header">
+            <h2>Notice Board</h2>
+        </div>
+        <br>
+        <div class="notices-list">
+            {% for notice in notices %}
+            <div class="notice-item" style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <small class="text-secondary">{{ notice.date }} - {{ notice.teacher_name }}</small>
+                <p style="margin-top: 0.5rem;">{{ notice.message }}</p>
+            </div>
+            {% else %}
+            <p class="text-secondary text-center">No notices posted yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

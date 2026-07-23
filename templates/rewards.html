@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Give Stars - EduManage{% endblock %}
+{% block page_title %}Award Stars{% endblock %}
+
+{% block content %}
+<div class="card glass-panel fade-in">
+    <h3>Reward Good Behavior</h3>
+    <p class="text-muted">Give Gold Stars or points to students for great work or acts of kindness.</p>
+    <br>
+    <form action="{{ url_for('teacher_rewards') }}" method="POST" class="form-grid">
+        <div class="input-group">
+            <label>Student</label>
+            <select name="student_id" required class="glass-input">
+                <option value="">Select Student...</option>
+                {% for student in students %}
+                <option value="{{ student.id }}" style="color: black;">{{ student.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label>Stars / Points</label>
+            <input type="number" name="points" required min="1" max="10" placeholder="e.g. 5" class="glass-input">
+        </div>
+        
+        <div class="input-group full-width">
+            <label>Reason</label>
+            <input type="text" name="reason" required placeholder="e.g. Helping a classmate" class="glass-input">
+        </div>
+        
+        <div class="input-group full-width" style="text-align: right;">
+            <button type="submit" class="btn btn-success"><i class="fa-solid fa-star"></i> Award Stars</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

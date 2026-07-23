@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Take Attendance - EduManage{% endblock %}
+{% block page_title %}Take Attendance{% endblock %}
+
+{% block content %}
+<div class="card glass-panel fade-in">
+    <h3>Mark Daily Attendance</h3>
+    <p class="text-muted">Select class, date, and status.</p>
+    <br>
+    <form action="{{ url_for('attendance') }}" method="POST" class="form-grid">
+        <div class="input-group">
+            <label>Student</label>
+            <select name="student_id" required class="glass-input">
+                {% for student in students %}
+                <option value="{{ student.id }}" style="color: black;">{{ student.name }} ({{ student.grade }} - {{ student.section }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Course / Subject</label>
+            <select name="course_id" class="glass-input">
+                {% for course in courses %}
+                <option value="{{ course.id }}" style="color: black;">{{ course.name }}</option>
+                {% endfor %}
+                <option value="0" style="color: black;">General Attendance</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Status</label>
+            <select name="status" required class="glass-input">
+                <option value="Present" style="color: black;">Present</option>
+                <option value="Absent" style="color: black;">Absent</option>
+                <option value="Late" style="color: black;">Late</option>
+            </select>
+        </div>
+        <div class="input-group" style="align-self: flex-end;">
+            <button type="submit" class="btn btn-primary" style="width: 100%">Save Record</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

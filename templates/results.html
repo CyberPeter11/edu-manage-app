@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Record Results - EduManage{% endblock %}
+{% block page_title %}Record Results{% endblock %}
+
+{% block content %}
+<div class="card glass-panel fade-in">
+    <h3>Enter Exam Marks</h3>
+    <p class="text-muted">Record performance for students across different subjects.</p>
+    <br>
+    <form action="{{ url_for('results') }}" method="POST" class="form-grid">
+        <div class="input-group">
+            <label>Exam</label>
+            <select name="exam_id" required class="glass-input">
+                {% for exam in exams %}
+                <option value="{{ exam.id }}" style="color: black;">{{ exam.name }}</option>
+                {% endfor %}
+                <option value="0" style="color: black;">Mid-Term Placeholder</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Student</label>
+            <select name="student_id" required class="glass-input">
+                {% for student in students %}
+                <option value="{{ student.id }}" style="color: black;">{{ student.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Marks / Score</label>
+            <input type="number" name="marks" required min="0" max="100" placeholder="e.g. 85" class="glass-input">
+        </div>
+        <div class="input-group" style="align-self: flex-end;">
+            <button type="submit" class="btn btn-primary" style="width: 100%">Record Marks</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

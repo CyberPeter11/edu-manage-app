@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}Students - EduManage{% endblock %}
+{% block page_title %}Student Directory{% endblock %}
+
+{% block content %}
+<div class="action-bar fade-in" style="animation-delay: 0.1s;">
+    <div class="filter-group">
+        <button class="filter-btn active" data-filter="All">All</button>
+        <button class="filter-btn" data-filter="Active">Active</button>
+        <button class="filter-btn" data-filter="Graduated">Graduated</button>
+        <button class="filter-btn" data-filter="Suspended">Suspended</button>
+    </div>
+    <div class="action-buttons">
+        <div class="search-container">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="Search students..." class="search-input glass-input">
+        </div>
+        <button class="btn btn-primary btn-glow" id="addStudentBtn">
+            <i class="fa-solid fa-plus"></i> Enroll Student
+        </button>
+    </div>
+</div>
+
+<div class="card glass-panel fade-in" style="animation-delay: 0.2s;">
+    <div class="table-responsive">
+        <table class="data-table" id="studentsTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr class="student-row" data-status="{{ student.status }}" data-search="{{ student.name | lower }} {{ student.email | lower }}">
+                    <td>
+                        <div class="student-cell">
+                            <div class="avatar-sm bg-gradient-primary">
+                                {{ student.name[0] }}
+                            </div>
+                            <span class="fw-500">{{ student.name }}</span>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-info">{{ student.grade }} - {{ student.section }}</span></td>
+                    <td><span class="text-secondary">{{ student.email }}</span></td>
+                    <td><span class="text-secondary">{{ student.phone }}</span></td>
+                    <td>
+                        <span class="status-badge status-{{ student.status | lower }}">
+                            {{ student.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-group">
+                            <a href="{{ url_for('student_safety', id=student.id) }}" class="btn-icon text-success" title="Safety Profile">
+                                <i class="fa-solid fa-shield-heart"></i>
+                            </a>
+                            <button class="btn-icon edit-student-btn coming-soon" data-id="{{ student.id }}" title="Edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <form action="#" method="POST" style="display:inline;">
+                                <button type="submit" class="btn-icon text-danger coming-soon" title="Delete">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div id="noResultsState" class="empty-state" style="display: none;">
+            <div class="empty-icon"><i class="fa-solid fa-search"></i></div>
+            <h3>No students found</h3>
+            <p>Try adjusting your search or filters.</p>
+        </div>
+
+        {% if not students %}
+        <div class="empty-state">
+            <div class="empty-icon"><i class="fa-solid fa-user-graduate"></i></div>
+            <h3>No Students Yet</h3>
+            <p>Get started by enrolling a new student.</p>
+            <button class="btn btn-primary" onclick="document.getElementById('addStudentBtn').click()">Enroll Student</button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="studentModal">
+    <div class="modal glass-panel-heavy">
+        <div class="modal-header">
+            <h2 id="modalTitle">Enroll New Student</h2>
+            <button class="close-modal"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="studentForm" action="{{ url_for('add_student') }}" method="POST">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                    <div class="input-group full-width">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="grade">Grade</label>
+                        <select id="grade" name="grade" required>
+                            <option value="9th">9th Grade</option>
+                            <option value="10th">10th Grade</option>
+                            <option value="11th">11th Grade</option>
+                            <option value="12th">12th Grade</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="section">Section</label>
+                        <select id="section" name="section" required>
+                            <option value="A">Section A</option>
+                            <option value="B">Section B</option>
+                            <option value="C">Section C</option>
+                        </select>
+                    </div>
+                    <div class="input-group full-width">
+                        <label for="phone">Phone Number (Parent/Guardian)</label>
+                        <input type="text" id="phone" name="phone">
+                    </div>
+                    <div class="input-group full-width">
+                        <label for="address">Home Address</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-modal-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Enroll & Generate Credentials</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

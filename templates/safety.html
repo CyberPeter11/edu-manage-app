@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Safety Profile - EduManage{% endblock %}
+{% block page_title %}{{ student.name }}'s Safety Profile{% endblock %}
+
+{% block content %}
+<div class="dashboard-sections">
+    <div class="section-card glass-panel fade-in" style="animation-delay: 0.1s;">
+        <div class="section-header">
+            <h2><i class="fa-solid fa-notes-medical"></i> Health & Medical Information</h2>
+        </div>
+        
+        {% if current_user.role == 'Admin' %}
+        <form action="{{ url_for('student_safety', id=student.id) }}" method="POST" class="form-grid">
+            <div class="input-group">
+                <label>Allergies</label>
+                <input type="text" name="allergies" value="{{ health.allergies if health else '' }}" placeholder="e.g. Peanuts, Penicillin" class="glass-input">
+            </div>
+            <div class="input-group">
+                <label>Medical Conditions</label>
+                <input type="text" name="medical_conditions" value="{{ health.medical_conditions if health else '' }}" placeholder="e.g. Asthma" class="glass-input">
+            </div>
+            <div class="input-group full-width">
+                <label>Emergency Contact (Other than Parent)</label>
+                <input type="text" name="emergency_contact" value="{{ health.emergency_contact if health else '' }}" placeholder="Name - Phone" class="glass-input">
+            </div>
+            
+            <div class="section-header full-width" style="margin-top: 1rem;">
+                <h2><i class="fa-solid fa-car"></i> Add Pickup Authorization</h2>
+            </div>
+            <div class="input-group">
+                <label>Adult Name</label>
+                <input type="text" name="adult_name" placeholder="Full Name" class="glass-input">
+            </div>
+            <div class="input-group">
+                <label>Relation</label>
+                <input type="text" name="relation" placeholder="e.g. Aunt, Grandparent" class="glass-input">
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="text" name="adult_phone" placeholder="Phone" class="glass-input">
+            </div>
+            
+            <div class="input-group full-width" style="text-align: right; margin-top: 1rem;">
+                <button type="submit" class="btn btn-primary">Save Safety Profile</button>
+            </div>
+        </form>
+        {% else %}
+        <div class="details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+            <div>
+                <strong>Allergies:</strong>
+                <p>{{ health.allergies if health and health.allergies else 'None reported' }}</p>
+            </div>
+            <div>
+                <strong>Medical Conditions:</strong>
+                <p>{{ health.medical_conditions if health and health.medical_conditions else 'None reported' }}</p>
+            </div>
+            <div style="grid-column: 1 / -1;">
+                <strong>Emergency Contact:</strong>
+                <p>{{ health.emergency_contact if health and health.emergency_contact else 'Not provided' }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="section-card glass-panel fade-in" style="animation-delay: 0.2s;">
+        <div class="section-header">
+            <h2><i class="fa-solid fa-users"></i> Authorized for Pickup</h2>
+        </div>
+        
+        <div class="table-responsive" style="margin-top: 1rem;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Relation</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pickup in pickups %}
+                    <tr>
+                        <td>{{ pickup.adult_name }}</td>
+                        <td>{{ pickup.relation }}</td>
+                        <td>{{ pickup.phone }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center">No additional adults authorized.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

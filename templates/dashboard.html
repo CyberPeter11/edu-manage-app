@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - EduManage{% endblock %}
+{% block page_title %}Dashboard overview{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+    <a href="{{ url_for('students') }}" class="stat-card glass-panel fade-in clickable-card" style="animation-delay: 0.1s;">
+        <div class="stat-icon bg-gradient-primary">
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="stat-details">
+            <h3>Total Students</h3>
+            <p class="stat-value">{{ stats.total_students }}</p>
+        </div>
+    </a>
+    
+    <a href="{{ url_for('teachers') }}" class="stat-card glass-panel fade-in clickable-card" style="animation-delay: 0.2s;">
+        <div class="stat-icon bg-gradient-success">
+            <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
+        <div class="stat-details">
+            <h3>Total Teachers</h3>
+            <p class="stat-value">{{ stats.total_teachers }}</p>
+        </div>
+    </a>
+
+    <a href="#" class="stat-card glass-panel fade-in clickable-card coming-soon" style="animation-delay: 0.3s;">
+        <div class="stat-icon bg-gradient-accent">
+            <i class="fa-solid fa-book-open"></i>
+        </div>
+        <div class="stat-details">
+            <h3>Total Courses</h3>
+            <p class="stat-value">{{ stats.total_courses }}</p>
+        </div>
+    </a>
+</div>
+
+<div class="dashboard-sections">
+    <div class="section-card glass-panel fade-in" style="animation-delay: 0.4s;">
+        <div class="section-header">
+            <h2>Recent Enrollments</h2>
+            <a href="{{ url_for('students') }}" class="btn-text">View All <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        
+        {% if recent_students %}
+        <div class="table-responsive">
+            <table class="modern-table interactive-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in recent_students %}
+                    <tr class="quick-edit-row" data-id="{{ student.id }}" style="cursor: pointer;" title="Click to view student in directory">
+                        <td>
+                            <div class="student-name-cell">
+                                <div class="avatar-sm bg-gradient-{{ loop.cycle('primary', 'accent', 'success') }}">
+                                    {{ student.name[0] }}
+                                </div>
+                                <span>{{ student.name }}</span>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-info">{{ student.grade }} - {{ student.section }}</span></td>
+                        <td>{{ student.email }}</td>
+                        <td>
+                            <span class="status-indicator status-{{ student.status.lower() }}">{{ student.status }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div>
+            <p>No students enrolled yet.</p>
+            <a href="{{ url_for('students') }}" class="btn btn-primary">Add Student</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

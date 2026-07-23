@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EduManage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .login-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .login-card .logo-icon {
+            margin: 0 auto 1rem;
+            width: 60px;
+            height: 60px;
+            font-size: 1.75rem;
+        }
+        .login-form {
+            text-align: left;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body class="login-page">
+    
+    <div class="flash-messages" id="toastContainer">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="toast toast-{{ category }}">
+                        <i class="fa-solid {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                        <span>{{ message }}</span>
+                        <button class="close-toast"><i class="fa-solid fa-times"></i></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="login-card glass-panel-heavy fade-in">
+        <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h2>Welcome to EduManage</h2>
+        <p class="text-muted" style="margin-top: 0.5rem">Sign in to your account</p>
+        
+        <form class="login-form form-grid" action="{{ url_for('login') }}" method="POST">
+            <div class="input-group full-width">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="glass-input-alt" required placeholder="admin@school.com" value="admin@school.com">
+            </div>
+            <div class="input-group full-width">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="glass-input-alt" required placeholder="admin123" value="admin123">
+            </div>
+            <div class="input-group full-width" style="margin-top: 1rem;">
+                <button type="submit" class="btn btn-primary btn-glow" style="width: 100%">Sign In</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

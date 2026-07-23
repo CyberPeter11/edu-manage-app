@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Evaluate Behavior - EduManage{% endblock %}
+{% block page_title %}Evaluate Behavior{% endblock %}
+
+{% block content %}
+<div class="card glass-panel fade-in">
+    <h3>Soft Skills Evaluation</h3>
+    <p class="text-muted">Rate a student on soft skills and behavior.</p>
+    <br>
+    <form action="{{ url_for('teacher_behavior') }}" method="POST" class="form-grid">
+        <div class="input-group full-width">
+            <label>Student</label>
+            <select name="student_id" required class="glass-input">
+                <option value="">Select Student...</option>
+                {% for student in students %}
+                <option value="{{ student.id }}" style="color: black;">{{ student.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label>Teamwork</label>
+            <select name="teamwork" required class="glass-input">
+                <option value="Excellent" style="color: black;">Excellent</option>
+                <option value="Satisfactory" style="color: black;">Satisfactory</option>
+                <option value="Needs Improvement" style="color: black;">Needs Improvement</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Listening Skills</label>
+            <select name="listening" required class="glass-input">
+                <option value="Excellent" style="color: black;">Excellent</option>
+                <option value="Satisfactory" style="color: black;">Satisfactory</option>
+                <option value="Needs Improvement" style="color: black;">Needs Improvement</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Overall Behavior</label>
+            <select name="behavior" required class="glass-input">
+                <option value="Excellent" style="color: black;">Excellent</option>
+                <option value="Satisfactory" style="color: black;">Satisfactory</option>
+                <option value="Needs Improvement" style="color: black;">Needs Improvement</option>
+            </select>
+        </div>
+        <div class="input-group full-width">
+            <label>Additional Comments</label>
+            <textarea name="comments" rows="3" class="glass-input" placeholder="Enter comments..."></textarea>
+        </div>
+        
+        <div class="input-group full-width" style="text-align: right;">
+            <button type="submit" class="btn btn-primary">Submit Evaluation</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
